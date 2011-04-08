@@ -25,7 +25,8 @@ from config_defaults import defaults
 
 from unicode_helper import p
 from utils import (Config, FileFinder, FileParser, Renamer, warn,
-applyCustomInputReplacements, formatEpisodeNumbers, makeValidFilename)
+applyCustomInputReplacements, formatEpisodeNumbers, makeValidFilename,
+EpisodeInfo, DatedEpisodeInfo, NoSeasonEpisodeInfo )
 
 from tvnamer_exceptions import (ShowNotFound, SeasonNotFound, EpisodeNotFound,
 EpisodeNameNotFound, UserAbort, InvalidPath, NoValidFilesFoundError,
@@ -54,9 +55,13 @@ def getDestinationFolder(episode):
             custom_blacklist = Config['custom_filename_character_blacklist'],
             replace_with = Config['replace_invalid_characters_with'])
 
-
     # Calls makeValidFilename on series name, as it must valid for a filename
-    destdir = Config['move_files_destination'] % {
+    if type(episode) == NoSeasonEpisodeInfo:
+        destdirpattern = Config['move_files_destination_no_season']
+    else:
+        destdirpattern = Config['move_files_destination']
+
+    destdir = destdirpattern % {
         'seriesname': wrap_validfname(episode.seriesname),
         'seasonnumber': episode.seasonnumber if hasattr(episode, "seasonnumber") else 1,
         'episodenumbers': wrap_validfname(formatEpisodeNumbers(episode.episodenumbers))

@@ -93,6 +93,7 @@ defaults = {
     # - %(episodenumbers)s (Note: this is a string, formatted with config
     #                       variable episode_single and joined with episode_separator)
     'move_files_destination': '.',
+    'move_files_destination_no_season': '.',
 
     # Patterns to parse input filenames with
     'filename_patterns': [
