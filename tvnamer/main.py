@@ -58,7 +58,7 @@ def getDestinationFolder(episode):
     # Calls makeValidFilename on series name, as it must valid for a filename
     destdir = Config['move_files_destination'] % {
         'seriesname': wrap_validfname(episode.seriesname),
-        'seasonnumber': episode.seasonnumber,
+        'seasonnumber': episode.seasonnumber if hasattr(episode, "seasonnumber") else 1,
         'episodenumbers': wrap_validfname(formatEpisodeNumbers(episode.episodenumbers))
     }
     return destdir
@@ -158,7 +158,7 @@ def processFile(tvdb_instance, episode):
 
         if len(Config['output_filename_replacements']) > 0:
             # Show filename without replacements
-            p("Before custom output replacements: %s" % (episode.generateFilename(preview_orig_filename = False)))
+            p("Before custom output replacements: %s" % (episode.generateFilename()))
 
         p("New filename: %s" % newName)
 
